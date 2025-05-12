@@ -167,3 +167,5 @@ src/dependencies/
 *__pycache__*
 *.ipynb*
 notebooks/*
+
+ckpt/
