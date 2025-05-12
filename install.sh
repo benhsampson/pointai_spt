@@ -2,9 +2,8 @@
 
 # Local variables
 PROJECT_NAME=spt
-PYTHON=3.8
-TORCH=2.2.0
-CUDA_SUPPORTED=(11.8 12.1)
+PYTHON=3.9
+TORCH=2.6.0
 
 
 # Recover the project's directory from the position of the install.sh
@@ -28,16 +27,18 @@ echo "⭐ Searching for installed CUDA"
 echo
 # Recover the CUDA version using nvcc
 CUDA_VERSION=`nvcc --version | grep release | sed 's/.* release //' | sed 's/, .*//'`
-CUDA_MAJOR=`echo ${CUDA_VERSION} | sed 's/\..*//'`
-CUDA_MINOR=`echo ${CUDA_VERSION} | sed 's/.*\.//'`
+# CUDA_MAJOR=`echo ${CUDA_VERSION} | sed 's/\..*//'`
+# CUDA_MINOR=`echo ${CUDA_VERSION} | sed 's/.*\.//'`
+CUDA_MAJOR=12
+CUDA_MINOR=6
 
 # If CUDA version not supported, print error and exit
-if [[ ! " ${CUDA_SUPPORTED[*]} " =~ " ${CUDA_VERSION} " ]]
-then
-    echo "Found CUDA ${CUDA_VERSION} installed, which is not among the supported versions: "`echo ${CUDA_SUPPORTED[*]}`
-    echo "Please update CUDA to one of the supported versions."
-    exit 1
-fi
+#if [[ ! " ${CUDA_SUPPORTED[*]} " =~ " ${CUDA_VERSION} " ]]
+#then
+#    echo "Found CUDA ${CUDA_VERSION} installed, which is not among the supported versions: "`echo ${CUDA_SUPPORTED[*]}`
+#    echo "Please update CUDA to one of the supported versions."
+#    exit 1
+#fi
 
 echo
 echo
@@ -118,6 +119,8 @@ python setup.py install
 cd ../../ # back to the {FRNN} directory
 python setup.py install
 cd ../../../
+
+pip install flash_attn -U --force-reinstall
 
 echo
 echo
