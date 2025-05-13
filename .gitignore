@@ -165,7 +165,7 @@ src/dependencies/
 *.so
 *.cmake
 *__pycache__*
-*.ipynb*
+# *.ipynb*
 notebooks/*
 
 ckpt/

@@ -1,5 +1,5 @@
 import pathlib
-from typing import TypedDict
+from typing import TypedDict, Union
 import laspy
 import numpy as np
 import pyproj
@@ -9,7 +9,7 @@ from pointai.pcd import PointCloud, check_point_cloud_validity
 class PointAiLasHeader(TypedDict):
     crs: pyproj.CRS
 
-def read_las_file(path: str|pathlib.Path, *, _override_crs:pyproj.CRS|None=None) -> PointCloud:
+def read_las_file(path: Union[str, pathlib.Path], *, _override_crs:Union[pyproj.CRS, None]=None) -> PointCloud:
     las=laspy.read(path)
     if _override_crs:
         crs=_override_crs
@@ -38,13 +38,13 @@ def read_las_file(path: str|pathlib.Path, *, _override_crs:pyproj.CRS|None=None)
     check_point_cloud_validity(pcd)
     return pcd
 
-def read_las_header(path: str|pathlib.Path):
+def read_las_header(path: Union[str, pathlib.Path]):
     with laspy.open(path, 'r') as las:
         return PointAiLasHeader(
             crs=las.header.parse_crs(), # type: ignore
         )
 
-def write_las_file(pcd: PointCloud, dst: str|pathlib.Path, replace:bool=False, mkparent:bool=True):
+def write_las_file(pcd: PointCloud, dst: Union[str, pathlib.Path], replace:bool=False, mkparent:bool=True):
     check_point_cloud_validity(pcd)
     dst=pathlib.Path(dst)
     if dst.exists() and not replace:
